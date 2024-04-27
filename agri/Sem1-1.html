@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 1-1 - Pydah Engineering College E-Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* CSS for dropdown */
+        .dropdown-container {
+            position: relative;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: calc(100% + 0.5rem); /* Adjusted top position */
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s; /* Added visibility transition */
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden; /* Changed from pointer-events to visibility */
+        }
+
+        .dropdown-container.clicked .dropdown {
+            opacity: 1;
+            transform: translateY(0); 
+            visibility: visible; /* Changed from pointer-events to visibility */
+        }
+
+        /* Additional styling */
+        .subject-card {
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <header class="bg-gray-900 text-white py-4">
+        <nav class="container mx-auto flex items-center justify-around">
+            <!-- Logo -->
+            <div>
+                <a href="https://www.pydahgroup.com/">
+                    <img src="https://i.ibb.co/dgNqKNx/logo-pydah.png" alt="Pydah Logo" class="h-12 md:h-12 lg:h-16 rounded-lg" />
+                </a>
+            </div>
+
+            <!-- Text -->
+            <div class="text-center">
+                <p class="text-lg md:text-xl lg:text-2xl font-bold">Pydah College Of Engineering</p>
+                <p class="text-md md:text-lg lg:text-xl">Accredited with NAAC Grade 'A'</p>
+                <p class="text-sm md:text-md lg:text-sm">Kakinada | Andhra Pradesh | INDIA</p>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold text-center md:text-4xl lg:text-4xl mb-8">Semester 1-1 Subjects</h1>
+        
+        <div id="subject-cards" class="grid grid-cols-1 align-center justify-center  gap-4">
+            <!-- Dynamic cards will be added here -->
+        </div>
+    </div>
+
+    <script>
+        // Function to create subject cards dynamically
+        function createSubjectCard(subjectName, links) {
+            const subjectCardsContainer = document.getElementById('subject-cards');
+
+            // Create card element
+            const card = document.createElement('div');
+            card.classList.add('subject-card', 'bg-green-400', 'p-6', 'rounded-lg', 'shadow-lg', 'block', 'hover:bg-green-500', 'transition-colors', 'duration-300', 'cursor-pointer','md:w-72','lg:w-2/3', 'lg:ml-64','align-center','justify-center','dropdown-container');
+            card.innerHTML = `
+                <h2 class="text-xl font-bold mb-4">${subjectName}</h2>
+                <div class="dropdown hidden">
+                    <ul class="py-2 px-4 bg-green-600 hover:bg-green-700 rounded-lg shadow-lg">
+                        ${links.map(link => `<li><a href="${link.url}" class="text-white hover:underline">${link.title}</a></li>`).join('')}
+                    </ul>
+                </div>
+                <div class="button-container">
+                    <button class="button" onclick="toggleDropdown(event)">Show Dropdown</button>
+                    <button class="button" onclick="downloadPDF('${subjectName}')">Download PDF</button>
+                </div>
+            `;
+            card.addEventListener('click', function() {
+                const dropdown = this.querySelector('.dropdown');
+                dropdown.classList.toggle('hidden');
+                this.classList.toggle('clicked');
+                this.style.marginBottom = dropdown.classList.contains('hidden') ? '2px' : '6rem';
+            });
+
+            // Append card to container
+            subjectCardsContainer.appendChild(card);
+        }
+
+        // Function to toggle dropdown visibility
+        function toggleDropdown(event) {
+            event.stopPropagation(); // Prevents click event from propagating to the card
+            const card = event.target.closest('.subject-card');
+            const dropdown = card.querySelector('.dropdown');
+            dropdown.classList.toggle('hidden');
+            card.classList.toggle('clicked');
+            const marginBottom = dropdown.classList.contains('hidden') ? '2px' : '6rem';
+            card.style.marginBottom = marginBottom;
+        }
+
+        // Function to simulate downloading a PDF
+        function downloadPDF(subjectName) {
+            // In a real scenario, you would trigger a download
+            // For demonstration purposes, let's create a dummy PDF blob and open it in a new tab
+            const dummyPDFData = 'data:application/pdf;base64,JVBERi0xLjQKJcfsj6IKNSAwIG9iago8PAovUHJvZHVjZXIgPG...'; // Dummy PDF data
+            const blob = new Blob([atob(dummyPDFData)], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${subjectName}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Example usage:
+        // Call createSubjectCard function with subject name and array of links for each subject
+        createSubjectCard('Subject 1', [{ title: 'Link 1', url: '#' }, { title: 'Link 2', url: '#' }, { title: 'Link 3', url: '#' }]);
+        createSubjectCard('Subject 2', [{ title: 'Link 4', url: '#' }, { title: 'Link 5', url: '#' }, { title: 'Link 6', url: '#' }]);
+        createSubjectCard('Subject 3', [{ title: 'Link 7', url: '#' }, { title: 'Link 8', url: '#' }, { title: 'Link 9', url: '#' }]);
+        createSubjectCard('Subject 4', [{ title: 'Link 10', url: '#' }, { title: 'Link 11', url: '#' }, { title: 'Link 12', url: '#' }]);
+        // Add more subjects as needed
+    </script>
+</body>
+</html>

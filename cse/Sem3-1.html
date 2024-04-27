@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 1-1 - Pydah Engineering College E-Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* CSS for dropdown */
+        .dropdown-container {
+            position: relative;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: calc(100% + 0.5rem); /* Adjusted top position */
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s; /* Added visibility transition */
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden; /* Changed from pointer-events to visibility */
+        }
+
+        .dropdown-container.clicked .dropdown {
+            opacity: 1;
+            transform: translateY(0); 
+            visibility: visible; /* Changed from pointer-events to visibility */
+        }
+
+        /* Additional styling */
+        .subject-card {
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <header class="bg-gray-900 text-white py-4">
+        <nav class="container mx-auto flex items-center justify-around">
+            <!-- Logo -->
+            <div>
+                <a href="https://www.pydahgroup.com/">
+                    <img src="https://i.ibb.co/dgNqKNx/logo-pydah.png" alt="Pydah Logo" class="h-12 md:h-12 lg:h-16 rounded-lg" />
+                </a>
+            </div>
+
+            <!-- Text -->
+            <div class="text-center">
+                <p class="text-lg md:text-xl lg:text-2xl font-bold">Pydah College Of Engineering</p>
+                <p class="text-md md:text-lg lg:text-xl">Accredited with NAAC Grade 'A'</p>
+                <p class="text-sm md:text-md lg:text-sm">Kakinada | Andhra Pradesh | INDIA</p>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold text-center md:text-4xl lg:text-4xl mb-8">Semester 3-1 Subjects</h1>
+        
+        <div id="subject-cards" class="grid grid-cols-1 align-center justify-center  gap-4">
+            <!-- Dynamic cards will be added here -->
+        </div>
+    </div>
+
+    <script>
+        // Function to create subject cards dynamically
+        function createSubjectCard(subjectName, links) {
+            const subjectCardsContainer = document.getElementById('subject-cards');
+
+            // Create card element
+            const card = document.createElement('div');
+            card.classList.add('subject-card', 'bg-green-400', 'p-6', 'rounded-lg', 'shadow-lg', 'block', 'hover:bg-green-500', 'transition-colors', 'duration-300', 'cursor-pointer','md:w-72','lg:w-2/3', 'lg:ml-64','align-center','justify-center','dropdown-container');
+            card.innerHTML = `
+                <h2 class="text-xl font-bold mb-4">${subjectName}</h2>
+                <div class="dropdown hidden">
+                    <ul class="py-2 px-4 bg-green-600 hover:bg-green-700 rounded-lg shadow-lg">
+                        ${links.map(link => `<li><a href="${link.url}" class="text-white hover:underline">${link.title}</a></li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            card.addEventListener('click', function() {
+                const dropdown = this.querySelector('.dropdown');
+                dropdown.classList.toggle('hidden');
+                this.classList.toggle('clicked');
+                this.style.marginBottom = dropdown.classList.contains('hidden') ? '2px' : '6rem';
+           
+            });
+
+            // Append card to container
+            subjectCardsContainer.appendChild(card);
+        }
+
+        // Example usage:
+        // Call createSubjectCard function with subject name and array of links for each subject
+        createSubjectCard('Computer Networks', [{ title: 'Material-1', url: 'https://drive.google.com/drive/folders/1E3GSPtGB5r2yB5eUB_FKWQWuD9aDtgze' }, { title: 'Linkk -2 ', url: '#' }, { title: 'Link 3', url: '#' }]);
+        createSubjectCard('Design & Analysis of Algorithm', [{ title: 'Material -1', url: 'https://drive.google.com/drive/folders/10Fv_7Dq_GlNSF92lPeDZC39OZqAJTnB1' }, { title: 'Link 5', url: '#' }, { title: 'Link 6', url: '#' }]);
+        createSubjectCard('Data WareHousing & Data Mining', [{ title: 'Material-1', url: 'https://drive.google.com/drive/folders/1S1kcpfav85Qss8iYCpQUt1wCXpE9gEC2' }, { title: 'Link 8', url: '#' }, { title: 'Link 9', url: '#' }]);
+        createSubjectCard('Software Project Management', [{ title: 'Material -1 ', url: 'https://drive.google.com/drive/folders/1cKOI3d9GcEvPv4XS7YdXkumZods5jEAw' }, { title: 'Link 11', url: '#' }, { title: 'Link 12', url: '#' }]);
+        createSubjectCard('Digital Logic Design ', [{ title: 'Material-1', url: 'https://drive.google.com/drive/folders/15ZZM3h205xnHVwJV9q0mMuvijDDeHYZ1' }, { title: 'Linkk -2 ', url: '#' }, { title: 'Link 3', url: '#' }]);
+        // Add more subjects as needed
+    </script>
+</body>
+</html>

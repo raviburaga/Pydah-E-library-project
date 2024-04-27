@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 1-1 - Pydah Engineering College E-Library</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-gray-900">
+    <header class="bg-gray-900 text-white py-4">
+        <nav class="container mx-auto flex items-center justify-around">
+            <!-- Logo -->
+            <div>
+                <a href="https://www.pydahgroup.com/">
+                    <img src="https://i.ibb.co/dgNqKNx/logo-pydah.png" alt="Pydah Logo" class="h-12 md:h-12 lg:h-16 rounded-lg" />
+                </a>
+            </div>
+
+            <!-- Text -->
+            <div class="text-center">
+                <p class="text-lg md:text-xl lg:text-2xl font-bold">Pydah College Of Engineering</p>
+                <p class="text-md md:text-lg lg:text-xl">Accredited with NAAC Grade 'A'</p>
+                <p class="text-sm md:text-md lg:text-sm">Kakinada | Andhra Pradesh | INDIA</p>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold text-center md:text-4xl lg:text-4xl mb-8">Semester 4-1 Subjects</h1>
+        
+        <div id="subject-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Dynamic cards will be added here -->
+        </div>
+    </div>
+
+    <script>
+        // Function to create subject cards dynamically
+        function createSubjectCard(subjectName, fileName) {
+            const subjectCardsContainer = document.getElementById('subject-cards');
+
+            // Create card element
+            const card = document.createElement('div');
+            card.classList.add('bg-green-400', 'p-6', 'rounded-lg', 'shadow-lg', 'block', 'hover:bg-green-500', 'transition-colors', 'duration-300', 'cursor-pointer');
+            card.setAttribute('onclick', `downloadPDF('${fileName}')`);
+
+            // Create title element
+            const title = document.createElement('h2');
+            title.classList.add('text-xl', 'font-bold', 'mb-4');
+            title.textContent = subjectName;
+
+            // Append title to card
+            card.appendChild(title);
+
+            // Append card to container
+            subjectCardsContainer.appendChild(card);
+        }
+
+        // Function to download PDF file
+        function downloadPDF(fileName) {
+            const link = document.createElement('a');
+            link.href = fileName;
+            link.setAttribute('download', '');
+            link.click();
+        }
+
+        // Example usage:
+        // Call createSubjectCard function with subject name and file name for each subject
+        createSubjectCard('Subject 1', 'subject1.pdf');
+        createSubjectCard('Subject 2', 'subject2.pdf');
+        createSubjectCard('Subject 3', 'subject3.pdf');
+        createSubjectCard('Subject 4', 'subject4.pdf');
+        // Add more subjects as needed
+    </script>
+</body>
+</html>
